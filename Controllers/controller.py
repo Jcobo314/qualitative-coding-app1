@@ -5,18 +5,14 @@ from PySide6.QtMultimedia import QMediaFormat, QMediaPlayer
 from PySide6.QtWidgets import QFileDialog, QDialog
 
 
-AVI = "video/x-msvideo"  # AVI
-
-
-MP4 = 'video/mp4'  # MP4
-
-
 def get_supported_mime_types():
     """
-    Summary:
-        get_supported_mime_types() - This returns a list of supported
-        mime types for the specific OS. It is used to set a filter on files so
-        only media files can be played.
+    get_supported_mime_types() - This returns a list of supported
+    mime types for the specific OS. It is used to set a filter on files so
+    only media files can be played.
+
+    Return:
+        result - A list of all supported media file types
     """
     result = []
     for f in QMediaFormat().supportedFileFormats(QMediaFormat.Decode):
@@ -48,10 +44,12 @@ class Controller:
     @Slot()
     def open_file_dialog(self):
         """
-        Summary:
-            load_video_handler() - Slot function that will act as a handler whenever the
-            load video button is clicked.
+        load_video_handler() - Slot function that will act as a handler whenever the
+        load video button is clicked.
         """
+        # Variables for AVI and MP4 video files.
+        avi_video_file = "video/x-msvideo"
+        mp4_video_file = 'video/mp4'
 
         # Opens the file browser, doesn't need any arguments as the window calls this.
         file_dialog = QFileDialog()
@@ -60,11 +58,11 @@ class Controller:
         is_windows = sys.platform == 'win32'
         mime_types = get_supported_mime_types()
 
-        # Adds AVI and MP4 if they were not supported
-        if is_windows and AVI not in mime_types:
-            mime_types.append(AVI)
-        elif MP4 not in mime_types:
-            mime_types.append(MP4)
+        # Adds AVI and MP4 if they were not supported.
+        if is_windows and avi_video_file not in mime_types:
+            mime_types.append(avi_video_file)
+        elif mp4_video_file not in mime_types:
+            mime_types.append(mp4_video_file)
         file_dialog.setMimeTypeFilters(mime_types)
 
         # This checks if a file to play has been selected.

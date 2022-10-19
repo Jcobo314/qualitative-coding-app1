@@ -33,9 +33,8 @@ class MainWindow(QMainWindow):
 
     def connect_load_video_to_slot(self, slot):
         """
-        Summary:
-            In this case this function checks whether the load video button is pressed
-            then calls the slot specific slot function in the controller.
+        In this case this function checks whether the load video button is pressed
+        then calls the slot specific slot function in the controller.
 
         Parameters:
             slot: The handler function that is called when the signal is clicked.
