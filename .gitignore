@@ -7,5 +7,5 @@ __pycache__/
 # Virtual environment directory
 venv/
 
-#.DS_Store
+# .DS_Store
 .DS_Store
