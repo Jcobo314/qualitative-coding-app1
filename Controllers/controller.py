@@ -36,8 +36,11 @@ class Controller:
             window (MainWindow): the main Window of the application
         """
 
-        self.window = window
-        self.media_player = QMediaPlayer()
+        self._window = window
+
+        self._media_player = QMediaPlayer()
+        self._media_player.setVideoOutput(self._window.get_video_widget())
+        self._media_player.setAudioOutput(self._window.get_audio_widget())
 
         window.connect_load_video_to_slot(self.open_file_dialog)
 
@@ -68,4 +71,4 @@ class Controller:
         # This checks if a file to play has been selected.
         if file_dialog.exec() == QDialog.Accepted:
             url = file_dialog.selectedUrls()[0]
-            self.media_player.setSource(url)
+            self._media_player.setSource(url)

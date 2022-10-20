@@ -1,6 +1,8 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QAction, QIcon
-from PySide6.QtWidgets import QMainWindow, QStyle
+from PySide6.QtMultimedia import QAudioOutput
+from PySide6.QtMultimediaWidgets import QVideoWidget
+from PySide6.QtWidgets import QMainWindow, QStyle, QHBoxLayout, QWidget
 
 
 class MainWindow(QMainWindow):
@@ -18,6 +20,26 @@ class MainWindow(QMainWindow):
 
         self.create_menu_bar()
 
+        central_widget = QWidget()
+        self._video_widget = QVideoWidget()
+        self._audio_widget = QAudioOutput()
+
+        horizontal_layout = QHBoxLayout()
+        horizontal_layout.addWidget(self._video_widget)
+
+        self.setCentralWidget(central_widget)
+        self.centralWidget().setLayout(horizontal_layout)
+
+    def connect_load_video_to_slot(self, slot):
+        """
+        In this case this function checks whether the load video button is pressed
+        then calls the slot specific slot function in the controller.
+
+        Parameters:
+            slot: The handler function that is called when the signal is clicked.
+        """
+        self._open_action.triggered.connect(slot)
+
     def create_menu_bar(self):
         """
         Creates the main menu-bar for the application window and populates it with a
@@ -28,15 +50,23 @@ class MainWindow(QMainWindow):
         file_dialog_icon = self.style().standardIcon(QStyle.SP_FileDialogStart)
 
         # Adds a load video button with an action.
-        self.open_action = QAction(file_dialog_icon, "Load video file", self)
-        file_menu.addAction(self.open_action)
+        self._open_action = QAction(file_dialog_icon, "Load video file", self)
+        file_menu.addAction(self._open_action)
 
-    def connect_load_video_to_slot(self, slot):
+    def get_audio_widget(self):
         """
-        In this case this function checks whether the load video button is pressed
-        then calls the slot specific slot function in the controller.
+        Gets the audio widget reference of the View.
 
-        Parameters:
-            slot: The handler function that is called when the signal is clicked.
+        Return:
+            Reference to the audio output widget.
         """
-        self.open_action.triggered.connect(slot)
+        return self._audio_widget
+
+    def get_video_widget(self):
+        """
+        Gets the video widget reference of the View.
+
+        Return:
+            Reference to the video widget.
+        """
+        return self._video_widget
